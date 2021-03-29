@@ -10,7 +10,7 @@ logger = setup_logger(module_name, 'datahandler_activity.log')
 
 def dump_to_json(chunk_pack: list, export_name: str, indent=2):
     """
-    Dumps chunk pack (list of lists of dictionaries) into a json file
+    Dumps chunk pack (list of lists of dicts) into a json file
 
     Args:
         chunk_pack (list): The data to be dumped into json in the form of a chunk pack (list of lists)

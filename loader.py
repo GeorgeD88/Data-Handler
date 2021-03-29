@@ -10,7 +10,7 @@ logger = setup_logger(module_name, 'datahandler_activity.log')
 
 def load_from_csv(csv_filename: str, chunk_size=1000000) -> list:
     """
-    Loads data from file of filetype .csv and returns the data
+    Loads data from file of filetype .csv and returns the data as a pack (list) of chunks (list of dicts)
 
     If a different chunk size is preferred, use the keyword argument chunk_size with the desired size, e.g.
 
@@ -83,7 +83,9 @@ def load_from_csv(csv_filename: str, chunk_size=1000000) -> list:
 
 def load_from_json(json_filename: str, simple_json: bool = False):
     """
-    Loads data from file of filetype .json and returns the data
+    Loads data from file of filetype .json and returns the data as a chunk (dict),
+        with loading from json instead of csv, the chunk is just the same dict as the json file itself
+        instead of the chunk being a list of dicts, each dict being a row from the csv.
 
     To remove redundant outer json shell because all the data is in one key,
         use the keyword argument simple_json with True value, e.g.
@@ -96,7 +98,7 @@ def load_from_json(json_filename: str, simple_json: bool = False):
             but if status of True is given, the redundant outer json shell will be removed.
 
     Returns:
-        Returns the data (dictionary), nothing fancy or extra::
+        Returns the data (dict), nothing fancy or extra::
             {
                 "key": value,
                 "key": value,
