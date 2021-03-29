@@ -51,10 +51,10 @@ def load_from_csv(csv_filename: str, chunk_size=1000000) -> list:
         # if a chunk size of None was given, it'll keep the data in one chunk instead of splitting it into many
         if not chunk_size:
             for row in csv_reader:
-                insert = {} #TODO RENAME TO ROW INSTERt
+                row_insert = {}
                 for key_i in range(len(header)):
-                    insert[header[key_i]] = row[key_i]
-                chunk_insert.append(insert)
+                    row_insert[header[key_i]] = row[key_i]
+                chunk_insert.append(row_insert)
             chunk_pack.append(chunk_insert.copy())
         # else if a chunk size IS give, it'll split the data into chunks using the given chunk size as a limit
         else:
@@ -67,10 +67,10 @@ def load_from_csv(csv_filename: str, chunk_size=1000000) -> list:
                     chunk_insert = []
                     counter = 0
                     parts += 1
-                insert = {}
+                row_insert = {}
                 for key_i in range(len(header)):
-                    insert[header[key_i]] = row[key_i]
-                chunk_insert.append(insert)
+                    row_insert[header[key_i]] = row[key_i]
+                chunk_insert.append(row_insert)
                 counter += 1
             # the last chunk most likely won't hit the chunk size limit, so at the end we'll just add it manually
             if chunk_insert:
