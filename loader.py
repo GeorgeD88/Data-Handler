@@ -39,37 +39,42 @@ def load_from_csv(csv_filename: str, chunk_size=1000000) -> list:
             ]
     """
 
-    start = time()  # start timer for runtime, for logging purposes
+    start = time()
     with open(csv_filename) as in_csv:
-        csv_reader = csv.reader(in_csv, delimiter=',')  # defines csv reader with the delimiter as ","
-        logger.info(f'started reading csv file {csv_filename}')  # logs that the loading process has started
-        header = next(csv_reader)  # defines the header as the first line
-        parts = 1  # defines part as 1 because there's always at least 1 chunk
-        chunk_pack = []  # defines a list of lists to store the different chunks of data
-        chunk_insert = []  # defines a chunk insert so once a chunk is completed, it's added to the chunk pack
-        if not chunk_size:  # loads everything into 1 chunk, regardless of number of rows, for ease of traversal
+        csv_reader = csv.reader(in_csv, delimiter=',')
+        logger.info(f'started reading csv file {csv_filename}')
+        header = next(csv_reader)
+        parts = 1
+        chunk_pack = []  # the chunk pack is a list that will store each chunk of data
+        chunk_insert = []  # the chunk insert is where the chunk of data is constructed to be inserted into the pack
+
+        # if a chunk size of None was given, it'll keep the data in one chunk instead of splitting it into many
+        if not chunk_size:
             for row in csv_reader:
-                insert = {}  # defines an empty dictionary to fill with row info and append to chunk
+                insert = {} #TODO RENAME TO ROW INSTERt
                 for key_i in range(len(header)):
-                    insert[header[key_i]] = row[key_i]  # defines the key with data from the corresponding csv column
+                    insert[header[key_i]] = row[key_i]
                 chunk_insert.append(insert)
-            chunk_pack.append(chunk_insert.copy())  # adds newly created chunk to the chunk pack
-        else:  # for standard csv processing, splits into chunks
-            counter = 0  # defines a counter to count the line of the current chunk
+            chunk_pack.append(chunk_insert.copy())
+        # else if a chunk size IS give, it'll split the data into chunks using the given chunk size as a limit
+        else:
+            counter = 0
             for row in csv_reader:
-                if counter == chunk_size:  # checks if current chunk being built is as big as the max chunk size
-                    logger.info(f'sealed chunk {len(chunk_pack)}')  # logs the chunk being sealed
-                    chunk_pack.append(chunk_insert.copy())  # adds the newly finished chunk to the chunk pack
-                    chunk_insert = []  # resets chunk to empty to prepare for a new chunk
-                    counter = 0  # resets the counter to 0 cause it's onto a new chunk
-                    parts += 1  # adds to the part counter
-                insert = {}  # defines an empty dictionary to fill with row info and append to chunk
+                # if the row counter reaches the same number as the chunk size limit, it'll start adding to a new chunk
+                if counter == chunk_size:
+                    logger.info(f'sealed chunk {len(chunk_pack)}')
+                    chunk_pack.append(chunk_insert.copy())
+                    chunk_insert = []
+                    counter = 0
+                    parts += 1
+                insert = {}
                 for key_i in range(len(header)):
-                    insert[header[key_i]] = row[key_i]  # defines the key with data from the corresponding csv column
-                chunk_insert.append(insert)  # adds converted row to chunk pack
-                counter += 1  # increments the counter for next row
-            if chunk_insert:  # checks if the chunk_insert contains something
-                chunk_pack.append(chunk_insert.copy())  # adds final chunk to the chunk pack
+                    insert[header[key_i]] = row[key_i]
+                chunk_insert.append(insert)
+                counter += 1
+            # the last chunk most likely won't hit the chunk size limit, so at the end we'll just add it manually
+            if chunk_insert:
+                chunk_pack.append(chunk_insert.copy())
     runtime = time() - start
     logger.info(f'extracted csv data from file {csv_filename} into {parts} '
                 f'chunk{"s" if parts > 2 else ""} in {round(runtime, 2)} sec')
@@ -99,13 +104,15 @@ def load_from_json(json_filename: str, simple_json: bool = False):
             }
     """
 
-    start = time()  # start timer for runtime, for logging purposes
+    start = time()
+    # simply opens the json file loads it in
     with open(json_filename) as in_json:
-        data = json.load(in_json)  # loads json from file
-        logger.info(f'started reading json file {json_filename}')  # logs that loading process has started
-        if simple_json:  # ignores the redundant outer json shell
-            only_key = list(data.keys())[0]  # gets the only key in the json data
-            data = data[only_key]  # redefines data as the only json object in it
+        data = json.load(in_json)
+        logger.info(f'started reading json file {json_filename}')
+        # if all of the data is in just one json object, it will only return that nested value
+        if simple_json:
+            only_key = list(data.keys())[0]
+            data = data[only_key]
     runtime = time() - start
     logger.info(f'extracted json data from file {json_filename} in {round(runtime, 2)} sec')
     return data

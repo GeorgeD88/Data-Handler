@@ -32,10 +32,12 @@ def setup_logger(name: str, log_file: str, log_format: str = "%(levelname)s:%(na
         logging.Logger: the logger that was just constructed.
     """
 
-    formatter = logging.Formatter(log_format, datefmt=date_format)  # defines formatter with specified log format
-    handler = logging.FileHandler(log_file)  # defines file handler
-    handler.setFormatter(formatter, )  # sets format of handler
+    # creating the file handler
+    formatter = logging.Formatter(log_format, datefmt=date_format)
+    handler = logging.FileHandler(log_file)
+    handler.setFormatter(formatter, )
 
+    # creating the main logger
     logger = logging.getLogger(name)  # defines the actual logger
     logger.setLevel(log_level)  # sets logger level
     logger.addHandler(handler)  # adds handler to logger
@@ -51,6 +53,7 @@ def empty_log(logger: logging.Logger):
         logger (logging.Logger): The logger whose log file you wish to empty
     """
 
-    file_handler = logger.handlers[0]  # gets the first file handler in the logger's list of handlers
-    handler_file = file_handler.baseFilename  # gets the filename of the file handler
-    open(handler_file, 'w').close()  # opens it for writing and just closes it without writing anything
+    # gets handler and pulls log filename from it
+    file_handler = logger.handlers[0]
+    handler_file = file_handler.baseFilename
+    open(handler_file, 'w').close()

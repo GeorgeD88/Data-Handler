@@ -19,21 +19,26 @@ def dump_to_json(chunk_pack: list, export_name: str, indent=2):
             but if an indent of None is given, the files won't be indented.
     """
 
-    start = time()  # start timer for runtime, for logging purposes
-    pack_size = len(chunk_pack)  # gets size of the chunk pack
-    if pack_size > 1:  # checks for pack size of more than one chunk
-        os.makedirs(export_name)  # makes folder to dump the many json chunks in
-        os.chdir(export_name)  # switches to new directory
-    # goes through every chunk in the chunk pack and dumps each one into its own json file
+    start = time()
+    pack_size = len(chunk_pack)
+
+    # checks if there are multiple chunks and makes a folder to store them if true
+    if pack_size > 1:
+        os.makedirs(export_name)
+        os.chdir(export_name)
     logger.info(f'started dumping {pack_size} '
-                f''
-                f'chunk{"s" if pack_size > 1 else ""} into json')  # logs that the dumping process has started
+                f'chunk{"s" if pack_size > 1 else ""} into json')
+
+    # goes through every chunk in the chunk pack and dumps each one into its own json file
     for i in range(pack_size):
-        constructed_filename = f'{export_name}_({i+1},{pack_size}).json'  # makes the json filename for the chunk
-        logger.info(f'dumping chunk {i+1}/{pack_size}')  # logs the chunk being dumped
+        constructed_filename = f'{export_name}_({i+1},{pack_size}).json'
+        logger.info(f'dumping chunk {i+1}/{pack_size}')
         with open(constructed_filename, 'w+') as out_json:
-            json.dump({"chunk": chunk_pack[i]}, out_json, indent=indent)  # dumps the chunk
-        logger.info(f'dumped chunk {i+1}/{pack_size}')  # logs the chunk finished dumping
-    os.chdir('..')  # switches back to parent directory or else the main program will now be in the new directory
+            json.dump({"chunk": chunk_pack[i]}, out_json, indent=indent)
+        logger.info(f'dumped chunk {i+1}/{pack_size}')
+
+    # if new folder was made for dumping process, it will switch back to the parent directory
+    if pack_size > 1:
+        os.chdir('..')
     runtime = time() - start
     logger.info(f'dumped {pack_size} chunk{"s" if pack_size > 1 else ""} in {round(runtime, 2)} sec')
