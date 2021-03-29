@@ -4,8 +4,8 @@ import json
 import os
 
 
-module_name = __file__.split("/")  # gets name of the module (filename) from the filepath
-logger = setup_logger(module_name[-1], 'datahandler_activity.log')  # defines the logger
+module_name = __file__.split("/")[-1]  # gets name of the module (filename) from the filepath
+logger = setup_logger(module_name, 'datahandler_activity.log')
 
 
 def dump_to_json(chunk_pack: list, export_name: str, indent=2):

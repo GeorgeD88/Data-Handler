@@ -4,8 +4,8 @@ import json
 import csv
 
 
-module_name = __file__.split("/")  # gets name of the module (filename) from the filepath
-logger = setup_logger(module_name[-1], 'datahandler_activity.log')  # defines the logger
+module_name = __file__.split("/")[-1]  # gets name of the module (filename) from the filepath
+logger = setup_logger(module_name, 'datahandler_activity.log')
 
 
 def load_from_csv(csv_filename: str, chunk_size=1000000) -> list:
