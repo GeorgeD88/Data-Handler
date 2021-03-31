@@ -8,7 +8,7 @@ module_name = __file__.split("/")[-1]  # gets name of the module (filename) from
 logger = setup_logger(module_name, 'datahandler_activity.log')
 
 
-def load_from_csv(csv_filename: str, chunk_size=1000000) -> dict:
+def load_from_csv(csv_filename: str, chunk_size: int or None = 1000000) -> dict:
     """
     Loads data from file of filetype .csv and returns the data as a pack (dict) of chunks (list of dicts)
 
