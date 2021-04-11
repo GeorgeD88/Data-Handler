@@ -1,10 +1,13 @@
 # DataHandler
-**DataHandler** is a basic library that I made as a personal tool to use in my other projects to do the data handling for me.
-I've made countless projects where I've needed to import some JSON or pull data from a CSV file, and all it takes is a simple block of code.
-That shouldn't be a problem at all, but when you've done it countless times before it becomes the part you dread and rush everytime.
-That's where **DataHandler** came in. **DataHandler** basically takes all that simple but crucial code and puts it into an easy-to-use library.
-It also implements fail safes and checks to make the data handling even easier by eliminating the need to check for conflicts, e.g. checking for existing files to avoid overwriting data.
-**DataHandler** puts all of this great functionality into one easy-to-use library and does all the error checking for me.
+**DataHandler** is a basic library that I made as a personal tool to use in my other projects to simplify handling huge data files.
+If you were to open a large CSV file (e.g. 100,000+ rows) and save it to a JSON file, your program would take quite a while,
+but even worse your data could easily end up being so big that you wouldnt be able to open the JSON file.
+This is where **DataHandler** comes in. The other day I was attempting to convert a CSV file into a JSON file to be able to easily search through the data and mess around with it.
+I kept getting an unresolvable error, and it turned out that my JSON file was so big that my program was not able to open it. My file had 2,431,727 rows!! Almost 2.5 million,
+which is where **DataHandler** came in. Instead of just importing the data and dumping it into a JSON file, **DataHandler** parses every row of raw data and once it reaches a certain limit,
+it seals that processed data as a "chunk" and moves on. This way you end up with all of your data separated into smaller chunks, all contained in a pack of chunks. Now that your data is contained in separate chunks,
+you can easily dump each chunk into a JSON file. **DataHandler** also implements fail safes and checks to make the data handling even easier by eliminating the need to check for conflicts,
+e.g. checking for existing files when dumping the data to avoid overwriting data. **DataHandler** puts all of this great functionality into one easy-to-use library and does all the messy work for you.
 
 ### How it Works
 Before we get into how to use this library, I'm going to give a very brief guide of what goes on behind the scenes.
