@@ -56,4 +56,5 @@ def empty_log(logger: logging.Logger):
     # gets handler and pulls log filename from it
     file_handler = logger.handlers[0]
     handler_file = file_handler.baseFilename
+    # opens the file for writing (not appending) which basically empties it and then just closes it
     open(handler_file, 'w').close()
