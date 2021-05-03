@@ -89,12 +89,13 @@ def load_from_csv(csv_filename: str, chunk_size: int or None = 1000000) -> dict:
 
 def load_from_json(json_filename: str) -> dict:
     """
-    Loads data from file of filetype .json and returns the data as a chunk pack (dict) with the items from,
-        the file with loading from json instead of csv, the chunk is just the same dict as the json file
-        itself instead of the chunk being a list of dicts, each dict being a row from the csv.
+    Loads data from file of filetype .json and returns the data as a chunk pack (dict),
+        containing the items from the json file. When loading data from the json file instead of csv,
+        the chunk pack is simply a dict of the json file itself with every key value pair being a chunk;
+        rather than the chunk pack being a manually constructed dict like with csv data.
 
     Args:
-        json_filename (str): The filename of the csv file we're loading in.
+        json_filename (str): The filename of the json file we're loading in.
 
     Returns:
         Returns the same data (dict) as the file, nothing fancy or extra::
